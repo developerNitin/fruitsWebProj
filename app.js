@@ -4,8 +4,15 @@ const mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/fruitdb", {useUnifiedTopology: true,useNewUrlParser: true});
 
 const fruitSchema = new mongoose.Schema({
-  name: String,
-  rating: Number,
+  name: {
+    type: Number,
+    required: [true, "please check you entry"]
+  },
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10
+  },
   review: String,
 });
 
@@ -13,11 +20,11 @@ const Fruit = mongoose.model("Fruit", fruitSchema);
 
 const fruit = new Fruit({
   name: "Apple",
-  rating: 7,
+  rating: 5,
   review: "Pretty solid as a fruit"
 });
 
-//fruit.save();
+fruit.save();
 
 const personSchema = new mongoose.Schema({
   name: String,
@@ -52,17 +59,53 @@ const banana = new Fruit({
 });
 
 Fruit.insertMany([kiwi, orange, banana], function(err){
-  if(err) {
+  if (err) {
     console.log(err);
   } else {
     console.log("successful");
   }
 });
 
+Fruit.find(function(err, fruits) {
+  if (err) {
+    console.log(err);
+  } else {
+    //console.log(fruits);
+    mongoose.connection.close();
+    fruits.forEach(function(fruit) {
+      console.log(fruit.name);
+    });
+  }
+});
 
+// --------------> used to update a fruit
+Fruit.updateOne({_id: demoID}, {name: "Peach"}, function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Success");
+  }
+});
+// --------------> used to delete a fruit
+Fruit.deleteOne(//{_id: } or
+  {name: "Peach"}, function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Success");
+  }
+});
+// --------------> used to delete fruits
+Person.deleteMany({name : "John deo"}, function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    mongoose.connection.close();
+    console.log("Success");
+  }
+});
 
-
-// 
+//
 // const insertDocuments = function(db, callback) {
 //   const collection = db.collection('fruits');
 //
