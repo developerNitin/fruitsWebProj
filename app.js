@@ -33,8 +33,36 @@ const person = new Person({
 
 person.save();
 
+const kiwi = new Fruit({
+  name: "Kiwi",
+  rating: 6,
+  review: "Good taste"
+});
+
+const orange = new Fruit({
+  name: "Orange",
+  rating: 5,
+  review: "tasty"
+});
+
+const banana = new Fruit({
+  name: "banana",
+  rating: 3,
+  review: "Pretty sweet"
+});
+
+Fruit.insertMany([kiwi, orange, banana], function(err){
+  if(err) {
+    console.log(err);
+  } else {
+    console.log("successful");
+  }
+});
 
 
+
+
+// 
 // const insertDocuments = function(db, callback) {
 //   const collection = db.collection('fruits');
 //
